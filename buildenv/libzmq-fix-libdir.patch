@@ -1,0 +1,13 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 8eb3411..a89a13e 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -997,7 +997,7 @@ list(APPEND sources ${CMAKE_CURRENT_BINARY_DIR}/platform.hpp)
+ 
+ set(prefix ${CMAKE_INSTALL_PREFIX})
+ set(exec_prefix ${prefix})
+-set(libdir ${prefix}/lib)
++set(libdir ${prefix}/${CMAKE_INSTALL_LIBDIR})
+ set(includedir ${prefix}/include)
+ set(VERSION ${ZMQ_VERSION_MAJOR}.${ZMQ_VERSION_MINOR}.${ZMQ_VERSION_PATCH})
+ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/libzmq.pc.in ${CMAKE_CURRENT_BINARY_DIR}/libzmq.pc @ONLY)

@@ -1,0 +1,15 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 0be6a81..f236d57 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -20,10 +20,6 @@ if(NOT ZeroMQ_FOUND)
+     message(FATAL_ERROR "ZeroMQ was not found, neither as a CMake package nor via pkg-config")
+ endif()
+ 
+-if (ZeroMQ_FOUND AND (NOT TARGET libzmq OR NOT TARGET libzmq-static))
+-  message(FATAL_ERROR "ZeroMQ version not supported!")
+-endif()
+-
+ if (EXISTS "${CMAKE_SOURCE_DIR}/.git")
+     OPTION (ENABLE_DRAFTS "Build and install draft classes and methods" ON)
+ else ()

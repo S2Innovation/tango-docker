@@ -1,0 +1,63 @@
+diff --git a/configure/CMakeLists.txt b/configure/CMakeLists.txt
+index ca8e2b3..2c1ae6a 100644
+--- a/configure/CMakeLists.txt
++++ b/configure/CMakeLists.txt
+@@ -54,6 +54,7 @@ else(OMNI_BASE)
+     if(NOT OMNIORB_PKG_FOUND)
+         message(FATAL_ERROR "omniORB4 library is required for Tango")
+     endif()
++    link_directories(${OMNIORB_PKG_LIBRARY_DIRS})
+ endif(OMNI_BASE)
+ 
+ if(ZMQ_BASE)
+@@ -119,6 +120,7 @@ else(ZMQ_BASE)
+     if(NOT ZMQ_PKG_FOUND)
+         message(FATAL_ERROR "ZMQ library is required for Tango")
+     endif()
++    link_directories(${ZMQ_PKG_LIBRARY_DIRS})
+ endif(ZMQ_BASE)
+ 
+ if(PTHREAD_WIN)
+diff --git a/cppapi/server/dserversignal.h b/cppapi/server/dserversignal.h
+index 8cfbc1a..d1fdc31 100644
+--- a/cppapi/server/dserversignal.h
++++ b/cppapi/server/dserversignal.h
+@@ -150,13 +150,7 @@ private:
+ 	}
+ #endif
+ 
+-#if (defined __GLIBC__ || defined __darwin__ || defined __freebsd__)
+ 	static inline bool auth_signal(TANGO_UNUSED(long s)) {return true;}
+-#endif
+-
+-#ifdef _TG_WINDOWS_
+-	static inline bool auth_signal(long s) {return true;}
+-#endif
+ 
+ 	static std::string 			sig_name[_NSIG];
+ 
+diff --git a/log4tango/config/config.cmake b/log4tango/config/config.cmake
+index e4a457c..f1110fe 100644
+--- a/log4tango/config/config.cmake
++++ b/log4tango/config/config.cmake
+@@ -34,7 +34,7 @@ check_library_exists(pthread pthread_getattr_np "" HAVE_PTHREAD_GETATTR_NP)
+ check_library_exists(pthread pthread_create "" HAVE_PTHREAD_CREATE)
+ check_include_file("pthread.h;pthread_np.h" HAVE_PTHREAD_NP_H)
+ 
+-if(CMAKE_THREAD_LIBS_INIT)
++if(CMAKE_HAVE_THREADS_LIBRARY)
+     set(LOG4TANGO_HAVE_THREADING "/**/")
+ endif()
+ 
+diff --git a/log4tango/include/log4tango/FileAppender.hh b/log4tango/include/log4tango/FileAppender.hh
+index 534975e..7671794 100644
+--- a/log4tango/include/log4tango/FileAppender.hh
++++ b/log4tango/include/log4tango/FileAppender.hh
+@@ -30,6 +30,7 @@
+ 
+ #include <log4tango/Portability.hh>
+ #include <log4tango/LayoutAppender.hh>
++#include <sys/types.h>
+ 
+ namespace log4tango {
+ 
